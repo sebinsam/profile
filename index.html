@@ -1,1 +1,124 @@
-hi sebin
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery with Debug Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Optional: Custom style for image scaling on hover */
+        .image-card:hover .gallery-image {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+
+    <div class="max-w-7xl mx-auto">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-900">✨ Dynamic Image Gallery</h1>
+            <p class="mt-2 text-lg text-gray-600">Click on an image to log its filename!</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <main class="lg:col-span-2">
+                <div class="bg-white p-6 rounded-xl shadow-2xl">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 text-indigo-600">The 5 Images</h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+                        
+                        <div class="image-card bg-gray-50 rounded-lg overflow-hidden shadow-lg cursor-pointer" data-filename="01.png" onclick="logImageClick(this)">
+                            <img src="01.png" alt="Gallery Image 1" class="gallery-image w-full h-40 object-cover transform transition-transform duration-300">
+                            <div class="p-4">
+                                <p class="text-sm font-semibold text-gray-800">File: 01.png</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card bg-gray-50 rounded-lg overflow-hidden shadow-lg cursor-pointer" data-filename="02.png" onclick="logImageClick(this)">
+                            <img src="02.png" alt="Gallery Image 2" class="gallery-image w-full h-40 object-cover transform transition-transform duration-300">
+                            <div class="p-4">
+                                <p class="text-sm font-semibold text-gray-800">File: 02.png</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card bg-gray-50 rounded-lg overflow-hidden shadow-lg cursor-pointer" data-filename="03.png" onclick="logImageClick(this)">
+                            <img src="03.png" alt="Gallery Image 3" class="gallery-image w-full h-40 object-cover transform transition-transform duration-300">
+                            <div class="p-4">
+                                <p class="text-sm font-semibold text-gray-800">File: 03.png</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card bg-gray-50 rounded-lg overflow-hidden shadow-lg cursor-pointer" data-filename="04.png" onclick="logImageClick(this)">
+                            <img src="04.png" alt="Gallery Image 4" class="gallery-image w-full h-40 object-cover transform transition-transform duration-300">
+                            <div class="p-4">
+                                <p class="text-sm font-semibold text-gray-800">File: 04.png</p>
+                            </div>
+                        </div>
+
+                        <div class="image-card bg-gray-50 rounded-lg overflow-hidden shadow-lg cursor-pointer" data-filename="05.png" onclick="logImageClick(this)">
+                            <img src="05.png" alt="Gallery Image 5" class="gallery-image w-full h-40 object-cover transform transition-transform duration-300">
+                            <div class="p-4">
+                                <p class="text-sm font-semibold text-gray-800">File: 05.png</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </main>
+
+            <aside class="lg:col-span-1">
+                <div class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl h-full">
+                    <h2 class="text-2xl font-bold mb-4 text-green-400">⚡ Console Log</h2>
+                    <div id="log-output" class="bg-gray-800 p-4 h-96 overflow-y-auto text-sm rounded font-mono border border-gray-700">
+                        <p class="text-gray-500">Awaiting user clicks...</p>
+                    </div>
+                    <button onclick="clearLog()" class="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition duration-200">
+                        Clear Log
+                    </button>
+                </div>
+            </aside>
+            
+        </div>
+        
+    </div>
+
+    <script>
+        const logOutput = document.getElementById('log-output');
+        let clickCount = 0;
+
+        // Function to log the clicked image filename
+        function logImageClick(element) {
+            clickCount++;
+            const filename = element.getAttribute('data-filename');
+            const logEntry = document.createElement('p');
+            logEntry.className = 'py-1 border-b border-gray-700 last:border-b-0';
+            
+            // Format the time as HH:MM:SS
+            const now = new Date();
+            const timeString = now.toTimeString().split(' ')[0];
+
+            logEntry.innerHTML = `<span class="text-blue-400">#${clickCount}</span> [${timeString}] <span class="text-green-400">IMAGE CLICKED:</span> ${filename}`;
+            
+            // Add to the top of the log (newest first)
+            if (logOutput.firstChild.className === 'text-gray-500') {
+                logOutput.innerHTML = ''; // Remove the initial message
+            }
+            logOutput.prepend(logEntry);
+
+            // Optional: Scroll to the top to see the newest entry
+            logOutput.scrollTop = 0;
+        }
+        
+        // Function to clear the log
+        function clearLog() {
+            logOutput.innerHTML = '<p class="text-gray-500">Log cleared. Awaiting user clicks...</p>';
+            clickCount = 0;
+        }
+
+    </script>
+
+</body>
+</html>
